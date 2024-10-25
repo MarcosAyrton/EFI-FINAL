@@ -23,11 +23,21 @@ const LoginUser = ({ isOpen, onClose }) => {
     });
 
     if (!response.ok) {
-        console.log('hubo un error en la llamada de la api.')
+      console.log('Hubo un error en la llamada a la API.');
+      return;
     }
-    const data = await response.json()
-    localStorage.setItem('token', JSON.stringify(data.access_toke))
-    console.log(data.Token);
+
+    const data = await response.json();
+    const token = data.Token;
+
+    // Decodificar payload de JWT para obtener los claims adicionales
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    const isAdmin = payload.admin;
+
+    localStorage.setItem('token', token);
+    localStorage.setItem('role', isAdmin ? 'admin' : 'user');
+
+    onClose(); // Cerrar modal tras iniciar sesión
   };
 
   const validationSchema = Yup.object().shape({
