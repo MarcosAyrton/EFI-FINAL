@@ -2,6 +2,8 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import { Button, Input, Divider, Card, CardBody, Image, Checkbox } from "@nextui-org/react";
 import SportiaLogoIcono from "/src/assets/SportiaLogoIcono.png";
+import UserList from "./UserList";
+import { Fragment } from "react";
 
 const CreateUser = () => {
   const validationSchema = Yup.object().shape({
@@ -45,6 +47,7 @@ const CreateUser = () => {
   };
 
   return (
+    <Fragment>
     <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
       <Card className="m-10">
         <div className="flex justify-center items-center">
@@ -73,6 +76,7 @@ const CreateUser = () => {
                   <p className="error text-red-600 font-bold mt-2">
                     {errors.username && touched.username && errors.username}
                   </p>
+                  <Divider />
                   <p className="mt-10 font-medium">Ingrese la contraseña deseada</p>
                   <Divider />
                   <Input
@@ -98,7 +102,7 @@ const CreateUser = () => {
                   </Checkbox>
                   <Button
                     className="m-10"
-                    color="secondary"
+                    color="success"
                     onClick={() => registerUser(values)}
                     type="button"
                     disabled={values.password === "" || values.username === "" || !isValid}
@@ -111,7 +115,9 @@ const CreateUser = () => {
           </Formik>
         </CardBody>
       </Card>
+      <UserList />
     </div>
+    </Fragment>
   );
 };
 
