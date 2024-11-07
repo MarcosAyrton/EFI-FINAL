@@ -2,12 +2,11 @@
 import { Fragment, useState } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { Button, Input, Divider, Card, CardBody, Image, Checkbox } from "@nextui-org/react";
+import { Button, Input, Divider, Card, CardBody, Image } from "@nextui-org/react";
 import { Eye, EyeOff } from "react-feather";
 import SportiaLogoIcono from "/src/assets/SportiaLogoIcono.png";
-import UserList from "./UserList";
 
-const CreateUser = () => {
+const Registrarse = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const validationSchema = Yup.object().shape({
@@ -17,7 +16,9 @@ const CreateUser = () => {
     password: Yup.string()
       .required("La contraseña es obligatoria")
       .max(12, "Máximo 12 caracteres"),
-    isAdmin: Yup.boolean(),
+    email: Yup.string()
+      .required("El email es obligatorio")
+      .email("Escriba bien el email, por favor"),
   });
 
   const token = localStorage.getItem("token");
@@ -26,27 +27,29 @@ const CreateUser = () => {
     const bodyRegisterUser = {
       username: values.username,
       password: values.password,
-      isAdmin: values.isAdmin || false,
+      email: values.email,
     };
 
-    console.log("Cuerpo de la solicitud:", bodyRegisterUser);
+    try {
+      const response = await fetch("http://127.0.0.1:5000/register", {
+        method: "POST",
+        body: JSON.stringify(bodyRegisterUser),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,  
+        },
+      });
 
-    const response = await fetch("http://127.0.0.1:5000/users", {
-      method: "POST",
-      body: JSON.stringify(bodyRegisterUser),
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
+      const data = await response.json();
 
-    const data = await response.json();
-    console.log("Respuesta del servidor:", data);
-
-    if (response.ok) {
-      alert('El usuario ha sido creado correctamente');
-    } else {
-      alert(`Error: ${data.Error}`);
+      if (response.ok) {
+        alert("El usuario ha sido registrado correctamente");
+      } else {
+        alert(`Error: ${data.Error}`);
+      }
+    } catch (error) {
+      console.error("Error en la solicitud:", error);
+      alert("Ocurrió un error al intentar registrar el usuario.");
     }
   };
 
@@ -59,14 +62,30 @@ const CreateUser = () => {
           </div>
           <CardBody>
             <Formik
-              initialValues={{ password: "", username: "", isAdmin: false }}
+              initialValues={{ password: "", username: "", email: "" }}
               validationSchema={validationSchema}
+              onSubmit={registerUser}  
             >
-              {({ values, errors, touched, handleChange, handleBlur, isValid }) => (
+              {({ values, errors, touched, handleChange, handleBlur, isValid, handleSubmit }) => (
                 <div className="flex-column justify-items-center">
-                  <h1 className="mt-10 text-xl font-bold">Formulario para Creación de Usuarios</h1>
-                  <form>
-                    <p className="mt-10 font-medium">Ingrese el usuario deseado</p>
+                  <h1 className="mt-10 text-xl font-bold">Formulario de registro de Sportia Indumentaria</h1>
+                  <form onSubmit={handleSubmit}>
+                    <p className="mt-10 font-medium">Ingrese su email</p>
+                    <Divider />
+                    <Input
+                      className="mt-2"
+                      type="text"
+                      name="email"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.email}
+                      placeholder="email"
+                    />
+                    <p className="error text-red-600 font-bold mt-2">
+                      {errors.email && touched.email && errors.email}
+                    </p>
+                    <Divider />
+                    <p className="mt-10 font-medium">Ingrese un nombre de usuario</p>
                     <Divider />
                     <Input
                       className="mt-2"
@@ -104,20 +123,11 @@ const CreateUser = () => {
                       {errors.password && touched.password && errors.password}
                     </p>
                     <Divider />
-                    <Checkbox 
-                      color="success"
-                      name="isAdmin"
-                      checked={values.isAdmin}
-                      onChange={handleChange}
-                    >
-                      ¿Es admin?
-                    </Checkbox>
                     <Button
                       className="m-10"
                       color="success"
-                      onClick={() => registerUser(values)}
-                      type="button"
-                      disabled={values.password === "" || values.username === "" || !isValid}
+                      type="submit"
+                      disabled={values.password === "" || values.username === "" || values.email === "" || !isValid}
                     >
                       Crear Usuario
                     </Button>
@@ -127,10 +137,9 @@ const CreateUser = () => {
             </Formik>
           </CardBody>
         </Card>
-        <UserList />
       </div>
     </Fragment>
   );
 };
 
-export default CreateUser;
+export default Registrarse;

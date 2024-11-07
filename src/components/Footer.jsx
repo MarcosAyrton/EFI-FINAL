@@ -27,16 +27,16 @@ const Footer = () => {
 
           <div className="flex space-x-8">
             <div>
-              <a href="#" className="hover:underline text-black"><h4 className="font-bold text-xl text-black">Sobre Nosotros</h4></a> 
+              <a href="/sobreNosotros" className="hover:underline text-black"><h4 className="font-bold text-xl text-black">Sobre Nosotros</h4></a> 
             </div>
             <div>
-              <a href="#" className="hover:underline text-black"><h4 className="font-bold text-xl text-black">Contacto</h4></a>
+              <a href="https://forms.gle/5QSjkxMmaDvTykqC8" className="hover:underline text-black"><h4 className="font-bold text-xl text-black">Contacto</h4></a>
             </div>
             <div>
-              <a href="#" className="hover:underline text-black"><h4 className="font-bold text-xl text-black">Terminos de Uso</h4></a>
+              <a href="/terminosDeUso" className="hover:underline text-black"><h4 className="font-bold text-xl text-black">Terminos de Uso</h4></a>
             </div>
             <div>
-              <a href="#" className="hover:underline text-black"><h4 className="font-bold text-xl text-black">Preguntas Frecuentes</h4></a>
+              <a href="/preguntasFrecuentes" className="hover:underline text-black"><h4 className="font-bold text-xl text-black">Preguntas Frecuentes</h4></a>
             </div>
           </div>
         </div>

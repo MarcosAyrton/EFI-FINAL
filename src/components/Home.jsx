@@ -11,8 +11,12 @@ import casacaImage2 from "/src/assets/boca.png";
 import logo2 from "/src/assets/adidas.png";
 import escudo2 from "/src/assets/bocaEscudo.png";
 import {Card, CardHeader, CardBody, CardFooter, Divider, Link, Image, Avatar} from "@nextui-org/react";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
+
+    const navigate = useNavigate();
+
     const colors = [
         { name: 'Gris', colorCode: '#7E7E7E' },
         { name: 'Rojo', colorCode: '#E74C3C' },
@@ -48,7 +52,7 @@ function Home() {
                             </p>
                             <Divider className='mb-5'/>
                             <div className='flex justify-evenly items-center'>
-                                <Button color='default' style={{ padding: '0.75rem 1.5rem', fontSize: '1.2rem' }}>COMPRAR YA</Button>
+                                <Button color='default' style={{ padding: '0.75rem 1.5rem', fontSize: '1.2rem' }} onPress={() => navigate('/casacas')}>COMPRAR YA</Button>
                                 <p className='font-bold text-2xl shadow-2xl'>$13.499,99</p>
                             </div>
                             <Divider className='mt-5'/>
@@ -164,7 +168,7 @@ function Home() {
                             </p>
                             <Divider className='mb-5'/>
                             <div className='flex justify-evenly items-center'>
-                                <Button color='default' style={{ padding: '0.75rem 1.5rem', fontSize: '1.2rem' }}>COMPRAR YA</Button>
+                                <Button color='default' style={{ padding: '0.75rem 1.5rem', fontSize: '1.2rem' }} onPress={() => navigate('/casacas')}>COMPRAR YA</Button>
                                 <p className='font-bold text-2xl shadow-2xl'>$13.499,99</p>
                             </div>
                             <Divider className='mt-5'/>
